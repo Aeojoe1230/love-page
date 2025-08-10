@@ -1,117 +1,165 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>لأميرة قلبي منار</title>
-<style>
-  body {
-    margin:0;
-    font-family: 'Tajawal', sans-serif;
-    color:white;
-    text-align:center;
-    height:100vh;
-    overflow:hidden;
-  }
-  /* الخلفية المتغيرة */
-  body::before {
-    content:"";
-    position:fixed;
-    top:0; left:0; right:0; bottom:0;
-    background-size:cover;
-    background-position:center;
-    z-index:-2;
-    animation: slideshow 15s infinite;
-  }
-  @keyframes slideshow {
-    0%, 33% { background-image: url('https://drive.google.com/uc?export=download&id=12tg782MtiD8AOtByX0FgNqZndDUm4LiT'); }
-    34%, 66% { background-image: url('https://drive.google.com/uc?export=download&id=1ze4v2bHq3ppeAMS8cOP15kaGCVKe-U0e'); }
-    67%, 100% { background-image: url('https://drive.google.com/uc?export=download&id=1XBZTwBFHvLyo180WCIhplf41zNLTqjqI'); }
-  }
-  /* تظليل فوق الخلفية */
-  body::after {
-    content:"";
-    position:fixed;
-    top:0; left:0; right:0; bottom:0;
-    background:rgba(0,0,0,0.4);
-    z-index:-1;
-  }
-  /* الفيديو */
-  video {
-    position:fixed;
-    top:0; left:0; width:100%; height:100%;
-    object-fit:cover;
-    z-index:9999;
-  }
-  .content {
-    position:relative;
-    top:50%;
-    transform:translateY(-50%);
-    padding:20px;
-  }
-  h1 {
-    font-size:28px;
-    margin-bottom:15px;
-  }
-  p {
-    font-size:18px;
-    line-height:1.8;
-    max-width:700px;
-    margin:0 auto 20px;
-  }
-  details {
-    background:rgba(255,255,255,0.15);
-    border-radius:8px;
-    padding:10px;
-    margin:10px auto;
-    max-width:400px;
-    cursor:pointer;
-  }
-  summary {
-    font-weight:bold;
-    font-size:16px;
-  }
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>رسالة صباحية لمنار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: 'Tajawal', system-ui, sans-serif;
+      background: linear-gradient(135deg, rgba(255,246,250,0.9), rgba(255,240,245,0.85));
+      display:flex;align-items:center;justify-content:center;padding:24px;
+      color:#3b2a2a;direction:rtl;transition:background-image .6s ease;
+      overflow:auto;
+    }
+    .container{
+      width:min(980px,96%); max-width:1200px;
+      background: rgba(255,255,255,0.9);
+      border-radius:20px;
+      box-shadow:0 14px 40px rgba(50,30,40,0.12);
+      padding:28px;position:relative;overflow:hidden;
+      backdrop-filter: blur(6px);
+    }
+    header{text-align:center;margin-bottom:18px}
+    header h1{font-size:30px;color:#b02f5a;margin-bottom:6px}
+    header p{color:#7a5960;font-size:16px}
+    .message{font-size:18px;line-height:1.9;color:#412b2b;margin-top:12px;text-align:justify;padding:8px}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+    button, .btn {
+      padding:10px 14px;border-radius:10px;border:1px solid rgba(120,80,90,0.12);
+      background:linear-gradient(#fff,#fff);cursor:pointer;font-weight:600;
+      box-shadow:0 6px 18px rgba(120,70,90,0.06);
+    }
+    .small{padding:8px 10px;font-size:14px}
+    .memories-box{margin-top:14px}
+    select{
+      padding:8px;border-radius:8px;border:1px solid #ddd;font-family:'Tajawal';min-width:180px;
+    }
+    .memory{margin-top:12px;padding:14px;background:linear-gradient(180deg,#fff7fb,#fff0f5);
+      border-radius:12px;border:1px solid rgba(200,120,140,0.12);display:none}
+    .memory.show{display:block; animation:fadeIn .35s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    .signature{margin-top:18px;font-weight:700;color:#5a2e2e;text-align:left}
+    .dates-panel{display:flex;gap:8px;flex-wrap:wrap}
+    .date-display{margin-top:10px;padding:12px;border-radius:10px;background:#fff0f5;border:1px solid rgba(160,60,100,0.08);min-width:220px}
+    /* floating hearts */
+    .hearts{position:absolute;left:6px;top:6px;pointer-events:none}
+    .heart{
+      position:absolute;width:22px;height:22px;opacity:0.95;transform:translateY(0);
+      animation:floatUp 6s linear infinite;
+      background:radial-gradient(circle at 30% 30%, #fff6, #fff0);
+    }
+    @keyframes floatUp{
+      0%{transform:translateY(0) scale(.6);opacity:0.9}
+      50%{opacity:0.6}
+      100%{transform:translateY(-220px) scale(1);opacity:0}
+    }
+    /* responsive */
+    @media (max-width:640px){
+      header h1{font-size:22px}
+      .message{font-size:16px}
+    }
+  </style>
 </head>
 <body>
+  <div class="container" id="card">
+    <div class="hearts" id="hearts"></div>
 
-<!-- الفيديو الترحيبي -->
-<video id="welcomeVideo" autoplay muted playsinline>
-  <source src="https://drive.google.com/uc?export=download&id=1O0w0KWuYBcxT3llQqGtmXM6LTY6Y3Owl" type="video/mp4">
-</video>
+    <header>
+      <h1>مرحباً بالأميرة منار نسيم الحسنين 👑🌷</h1>
+      <p>إليك صباحٌ يليق بجمالكِ ونقاء قلبكِ — رسالة مليئة بحبي وطمأنينتي.</p>
+    </header>
 
-<div class="content" id="mainContent" style="display:none;">
-  <h1>مرحباً بالأميرة منار نسيم الحسنين 🌹</h1>
-  <p>
-    يا منار، أنتِ نسمة الحنان اللي بتسكن قلبي، ونور الصبح اللي بيشرق على أيامي.  
-    عارف إنك كنتِ خايفة إني ما أتحملكِ أو أتغير، لكن صدقيني، حبك مش بس ثابت، ده بيكبر كل يوم.  
-    أنا هنا عشان أكون أمانك ودفاكِ، أفرحك وقت الضيق، وأمسح دموعك قبل ما تنزل.
-  </p>
+    <article class="message" id="mainMessage">
+      <p>منار حبيبتي،</p>
+      <p>كل صباح أستيقظ وأشكر الله لأنه منحني فرصة أن أحبكِ وأرافقكِ في هذه الحياة. أعلم أن في قلبكِ خشية — خشية أني قد لا أتحمّل، أو أن يزول الحنان يوماً. أريدكِ أن تطمئني الآن: خوفي عليكِ هو خوفي على نفسي، واهتمامي بكِ ليس حالة عابرة بل عهدٌ أبدي. عندما تقولين إنكِ قلقة فأنا أعدكِ أن أكون صبوراً، أن أستمع أكثر، وأن أبذل كل جهدي لأجعل راحتكِ وسعادتكِ أولويتي.</p>
+      <p>نحن لسنا في سباق مع أحد؛ نحنِ نبني معاً بيتاً من كلماتٍ صادقة، واختياراتٍ يومية، وابتساماتٍ بسيطة. لو خفتِ يوماً فمسي يديكِ، وأنظري إلى عيوني، فأنا معكِ — أُقِفُ، أحمِي، وأحبّ بلا شروط.</p>
+      <p>أنتِ لي أولاً، وأنتِ لي أخيراً. وبينهما ألف ذكرى سنصنعها معاً. صباحكِ ورد، يا أجمل أمنياتي.</p>
+    </article>
 
-  <!-- الذكريات -->
-  <details>
-    <summary>📅 أول لقاءنا - 25/3/2025</summary>
-    <p>اليوم اللي ابتدى فيه كل حاجة حلوة، اليوم اللي شفت فيه أجمل صدفة بقت قدري.</p>
-  </details>
-  <details>
-    <summary>❤️ بداية حبنا - 1/4/2025</summary>
-    <p>اليوم اللي اتأكدت فيه إنك مش بس قريبة من قلبي، إنتي قلبي نفسه.</p>
-  </details>
-  <details>
-    <summary>🌟 لحظات لا تُنسى</summary>
-    <p>ضحكتك اللي كانت بتطرد أي حزن، وكلامك اللي دايمًا بيطمني مهما حصل.</p>
-  </details>
-</div>
+    <div class="controls">
+      <div class="dates-panel">
+        <button class="btn small" id="showMeet">📅 تاريخ معرفتنا</button>
+        <button class="btn small" id="showLove">💌 بداية حبنا</button>
+        <button class="btn small" id="showPromise">🤝 وعدي لكِ</button>
+      </div>
 
-<script>
-  // لما يخلص الفيديو، يظهر المحتوى
-  const video = document.getElementById('welcomeVideo');
-  video.onended = () => {
-    video.style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-  };
-</script>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <label class="small muted">اختر ذكرى:</label>
+        <select id="memories">
+          <option value="">— اختر —</option>
+          <option value="25-03-2025">📅 يوم معرفتنا الأول — 25-03-2025</option>
+          <option value="01-04-2025">💖 بداية حبنا — 01-04-2025</option>
+          <option value="05-05-2025">🎁 أول هدية — 05-05-2025</option>
+        </select>
+      </div>
+    </div>
 
+    <div class="memories-box">
+      <div id="memoryText" class="memory" aria-live="polite"></div>
+    </div>
+
+    <div class="date-display" id="quickDate" style="display:none"></div>
+
+    <p class="signature">إلى الأبد،<br>جمعة 💖</p>
+  </div>
+
+  <script>
+    // بيانات الذكريات
+    const memoriesDetails = {
+      '25-03-2025': 'في هذا اليوم بدأ كل شيء؛ النظرة الأولى التي سرقت قلبي 💫 — أتذكّر كل تفصيلة فيها كما لو كانت الآن.',
+      '01-04-2025': 'هنا بدأت قصة حبنا الحقيقية، اشتعلت قلوبنا بالأمل وبالخطط الصغيرة لمستقبلنا 🌹.',
+      '05-05-2025': 'اليوم الذي اخترتُ فيه أول هدية لكِ، ورأيتُ ابتسامتكِ التي بقيت عالقة في بالي طوال الأسابيع.'
+    };
+
+    const memSelect = document.getElementById('memories');
+    const memBox = document.getElementById('memoryText');
+    memSelect.addEventListener('change', function(){
+      const v = this.value;
+      if (v && memoriesDetails[v]) {
+        memBox.textContent = memoriesDetails[v];
+        memBox.classList.add('show');
+      } else {
+        memBox.classList.remove('show');
+      }
+    });
+
+    // أزرار تواريخ سريعة
+    const quickDate = document.getElementById('quickDate');
+    function showQuick(text){
+      quickDate.textContent = text;
+      quickDate.style.display = 'block';
+      setTimeout(()=>{ quickDate.style.opacity = '1' }, 10);
+      // تختفي بعد 6 ثواني
+      clearTimeout(window._qdTimer);
+      window._qdTimer = setTimeout(()=>{ quickDate.style.display='none' }, 6000);
+    }
+    document.getElementById('showMeet').addEventListener('click', ()=> showQuick('📅 يوم معرفتنا: 25-03-2025 — هنا بدأ كل شيء 🌟'));
+    document.getElementById('showLove').addEventListener('click', ()=> showQuick('💌 بداية حبنا: 01-04-2025 — بداية الأحلام معا 💕'));
+    document.getElementById('showPromise').addEventListener('click', ()=> showQuick('🤝 وعد منّي: سأحميكِ وأكون لكِ سنداً كل يوم.'));
+
+    // قلوب متحركة زخرفية
+    function makeHearts(count=8){
+      const container = document.getElementById('hearts');
+      container.innerHTML = '';
+      const colors = ['#ffb3c6','#ff8fb3','#ff6f9a','#ffcbe6'];
+      for(let i=0;i<count;i++){
+        const el = document.createElement('div');
+        el.className = 'heart';
+        const size = 14 + Math.random()*28;
+        el.style.width = el.style.height = size + 'px';
+        el.style.left = (10 + Math.random()*80) + '%';
+        el.style.top = (60 + Math.random()*30) + '%';
+        el.style.backgroundImage = `radial-gradient(circle at 35% 30%, #ffffff88, ${colors[i%colors.length]})`;
+        el.style.transform = `translateY(0) rotate(${Math.random()*40-20}deg)`;
+        el.style.animationDuration = (5 + Math.random()*6) + 's';
+        container.appendChild(el);
+      }
+    }
+    makeHearts(10);
+  </script>
 </body>
 </html>
