@@ -1,60 +1,94 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>رسائل صباحية لمُنار</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet" />
 <style>
+  :root{
+    --bg1: #ffe6f0cc;
+    --bg2: #fff0f6cc;
+    --accent1: #b3395a;
+    --accent2: #d74a7e;
+    --accent3: #a33258;
+    --text: #633750;
+    --soft: rgba(179,57,90,0.08);
+  }
+
+  /* PAGE LAYOUT */
   body, html {
     margin:0; padding:0; height:100%;
     font-family: 'Tajawal', sans-serif;
-    background: linear-gradient(135deg, #ffe6f0cc 30%, #fff0f6cc 90%);
-    color: #6b2a3b;
+    background: linear-gradient(135deg, var(--bg1) 30%, var(--bg2) 90%);
+    color: var(--text);
     display: flex;
     justify-content: center;
     align-items: center;
     direction: rtl;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
   }
+
+  /* MAIN CONTAINER */
   .container {
-    background: #fff0f6cc;
+    background: rgba(255,240,246,0.95);
     max-width: 700px;
-    width: 90%;
+    width: 92%;
     border-radius: 25px;
-    box-shadow: 0 20px 50px rgba(179, 57, 90, 0.25);
+    box-shadow: 0 20px 50px rgba(179, 57, 90, 0.18);
     padding: 30px 35px;
     text-align: center;
     user-select: none;
     position: relative;
+    overflow: hidden;
+    transform-origin: center;
+    animation: popIn 450ms ease;
   }
+
+  @keyframes popIn{
+    from { transform: translateY(8px) scale(.995); opacity:0; }
+    to { transform: translateY(0) scale(1); opacity:1; }
+  }
+
   h1 {
     font-weight: 900;
     font-size: 32px;
-    margin-bottom: 20px;
-    color: #b3395a;
-    text-shadow: 1px 1px 4px rgba(179, 57, 90, 0.3);
+    margin-bottom: 10px;
+    color: var(--accent1);
+    text-shadow: 1px 1px 4px rgba(179, 57, 90, 0.25);
   }
-  p {
-    font-size: 20px;
-    margin-bottom: 24px;
-    line-height: 1.7;
-  }
-  button {
-    padding: 14px 30px;
-    margin: 10px 15px;
+  p.lead {
     font-size: 18px;
+    margin-bottom: 18px;
+    color: #6b2a3b;
+  }
+
+  /* BUTTONS */
+  .btn {
+    padding: 12px 26px;
+    margin: 10px 8px;
+    font-size: 17px;
     font-weight: 700;
     color: white;
-    background: linear-gradient(135deg, #d74a7e, #a33258);
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(179, 57, 90, 0.6);
-    transition: transform 0.3s ease;
+    box-shadow: 0 6px 20px rgba(179, 57, 90, 0.45);
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
+    display: inline-block;
   }
-  button:hover {
-    transform: scale(1.1);
+  .btn:hover { transform: translateY(-4px) scale(1.03); }
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent1);
+    border: 2px solid rgba(179,57,90,0.12);
+    box-shadow: none;
   }
+
+  /* MESSAGE BOX */
   #messageBox {
     background: #fff4fb;
     border-radius: 20px;
@@ -68,56 +102,358 @@
     text-align: justify;
     user-select: text;
     white-space: pre-line;
+    display: none;
+  }
+
+  /* CHOICES */
+  #buttonsDiv, #choiceDiv {
+    margin-top: 14px;
+  }
+
+  /* SUBTLE HEART ANIMATION ON WELCOME */
+  .heart {
+    display:inline-block;
+    margin-left:8px;
+    transform-origin:center;
+    animation: beat 1200ms infinite;
+    font-size: 20px;
+  }
+  @keyframes beat{
+    0% { transform: scale(1); opacity:0.9; }
+    30% { transform: scale(1.15); opacity:1; }
+    60% { transform: scale(1); opacity:0.95; }
+    100% { transform: scale(1); opacity:0.9; }
+  }
+
+  /* OVERLAY / MODAL for identity check */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,6,10,0.35), rgba(11,6,10,0.43));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 20px;
+    animation: fadeIn 260ms ease;
+  }
+  @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+  .modal {
+    background: #fff;
+    width: 100%;
+    max-width: 560px;
+    border-radius: 18px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    position: relative;
+    direction: rtl;
+  }
+  .modal h2 { font-size: 24px; color: var(--accent1); margin: 6px 0 10px; font-weight:800; }
+  .modal p { color: #6a3a49; margin-bottom: 12px; font-size:16px; }
+
+  /* date input style */
+  .dateRow {
+    display:flex;
+    gap:10px;
+    justify-content: center;
+    align-items:center;
+    margin: 14px 0 8px;
+    flex-wrap:wrap;
+  }
+  input[type="date"], input[type="text"] {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(99,55,80,0.08);
+    min-width: 200px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: 0 6px 20px var(--soft);
+  }
+  .smallNote { font-size:13px; color:#8a5970; margin-top:6px; }
+
+  .error {
+    color: #b72b3a;
+    margin-top: 8px;
+    font-weight:700;
+  }
+
+  /* success animation bubble */
+  .welcomeBubble {
+    background: linear-gradient(135deg,#fff0f6, #ffeef7);
+    padding:18px;
+    border-radius:14px;
+    border:1px solid rgba(163,58,90,0.06);
+    box-shadow: 0 12px 30px rgba(179,57,90,0.07);
+    margin-top: 12px;
+    text-align:center;
+  }
+
+  /* responsive */
+  @media (max-width:480px){
+    h1{ font-size:22px; }
+    .container { padding:20px; border-radius:16px; }
+    .btn { padding:10px 16px; font-size:15px; border-radius:14px; }
+    #messageBox { font-size:18px; padding:18px; min-height:150px; }
   }
 </style>
 </head>
 <body>
+  <!-- Overlay modal that asks "هل أنتِ منار؟" and asks for husband's birthdate via calendar -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" role="document">
+      <h2 id="modalTitle">مرحبًا بكِ يا جميلة ✨</h2>
+      <p>قبل ما نبدأ — بس عشان نتأكد إن الصفحة دي مخصوصة للأميرة <strong>منار</strong>، ممكن تقولي إذا كنتِ منار؟</p>
+
+      <div id="step1" aria-hidden="false">
+        <div style="display:flex; justify-content:center; gap:12px; margin-top:8px;">
+          <button id="imManarBtn" class="btn">أيوة، أنا منار 💖</button>
+          <button id="notManarBtn" class="btn ghost">لا، مش منار</button>
+        </div>
+        <p class="smallNote">لو ضغطتي "أيوة" هنسألك تاريخ ميلاد زوجِك عشان نأكد وندخلك بطريقة رومانسية ♥️</p>
+      </div>
+
+      <div id="step2" style="display:none;" aria-hidden="true">
+        <p>دخل/ي تاريخ ميلاد زوجِك باستخدام التقويم (اختاري اليوم/الشهر/السنة):</p>
+        <div class="dateRow">
+          <!-- date input (calendar) -->
+          <input id="dobInput" type="date" aria-label="تاريخ ميلاد زوجك" />
+          <button id="checkDobBtn" class="btn">تأكيد التاريخ</button>
+        </div>
+        <div id="dobHint" class="smallNote">مثال: لو تاريخ الميلاد 24/11/1996 اختاري 24 نوفمبر 1996 في التقويم.</div>
+        <div id="dobError" class="error" style="display:none;" role="alert"></div>
+      </div>
+
+      <div id="step3" style="display:none;" aria-hidden="true">
+        <div id="successBlock" class="welcomeBubble" style="display:none;">
+          <!-- Will be filled dynamically with romantic welcome -->
+        </div>
+        <div id="failBlock" style="display:none;">
+          <p class="error">معلش... الموقع ده مخصوص بس للأميرة <strong>منار نسيم الحسنيين</strong>.</p>
+          <p class="smallNote">لو ده غلط، ممكن ترجعي وتحاولي التاريخ تاني.</p>
+          <div style="margin-top:10px;">
+            <button id="tryAgainBtn" class="btn ghost">حاول تاني</button>
+            <button id="exitBtn" class="btn">خروج</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main container (original interface) -->
   <div class="container" role="main" aria-label="رسالة صباحية لمنار">
     <h1 id="greeting"></h1>
-    
-    <!-- إضافة الصورة هنا -->
-    <img src="https://drive.google.com/uc?export=view&id=12tg782MtiD8AOtByX0FgNqZndDUm4LiT" alt="صورة منار" style="max-width: 100%; border-radius: 20px; margin: 20px 0;">
-
-    <p>عايزة تشوفي بابي جمعة عايز يقلك إيه النهاردة؟</p>
+    <p class="lead">عايزة تشوفي بابي جمعة عايز يقلك إيه النهاردة؟</p>
     <div id="buttonsDiv">
-      <button id="yesBtn">أيوة طبعًا 💖</button>
-      <button id="waitBtn">استني شوية ⏳</button>
+      <button id="yesBtn" class="btn">أيوة طبعًا 💖</button>
+      <button id="waitBtn" class="btn ghost">استني شوية ⏳</button>
     </div>
 
     <!-- اختيار نوع الرسالة -->
     <div id="choiceDiv" style="display:none; margin-top:20px;">
       <p>اختاري نوع الرسالة اللي تحبي تشوفيها:</p>
-      <button id="shortMsgBtn">رسالة صباحية يانونة</button>
-      <button id="longMsgBtn">جزء من جواب من زوجك الحبيب</button>
+      <button id="shortMsgBtn" class="btn">رسالة صباحية يانونة</button>
+      <button id="longMsgBtn" class="btn ghost">جزء من جواب من زوجك الحبيب</button>
     </div>
 
-    <div id="messageBox" aria-live="polite" aria-atomic="true" style="display:none;"></div>
+    <div id="messageBox" aria-live="polite" aria-atomic="true"></div>
   </div>
 
 <script>
-  // ترحيب حسب الوقت
+  // ---------- Greeting based on time ----------
   function getGreeting() {
     const now = new Date();
     const hour = now.getHours();
     if (hour >= 5 && hour < 12) return "صباح الخير يا نونه صحيتي يا قلبي؟";
-    else if (hour >= 12 && hour < 17) return "مساء الخير يا نونه يا أجمل ملاك";
+    else if (hour >= 12 && hour < 17) return "ظهر الخير يا نونه يا أجمل ملاك";
     else if (hour >= 17 && hour < 20) return "مساء الخير يا نونه يا ضي عيوني";
     else return "تصبح على خير يا نونه يا وردة قلبي";
   }
-
   document.getElementById('greeting').textContent = getGreeting();
 
-  // 100 رسالة صباحية قصيرة باللهجة المصرية كاملة
+  // ---------- Original message arrays (kept intact) ----------
   const shortMessages = [
-    // ... (نفس الرسائل بدون تعديل)
+    `صحيت يا نونه؟ النهاردة يوم جديد وحلو وفرصة عشان تحققي كل اللي نفسك فيه.`,
+    `يا نونه يا حبيبتي، فاكرة دايمًا إنك مش لوحدك، أنا جنبك دايمًا.`,
+    `صباحك ورد يا نونه، خلي ابتسامتك تفتحلك أبواب الخير كلها.`,
+    `يا نونه يا بنتي، دايمًا افتكري إنك أجمل حاجة في حياتي.`,
+    `النهاردة يوم جديد، يا نونه، خدتي نفسك وعيشي اللحظة.`,
+    `نونه يا أختي وصحبتي، كل يوم معاك أجمل من اللي قبله.`,
+    `يا نونه يا روحي، لو واجهتي حاجة صعبة، افتكري دايمًا إنك قوية قد الدنيا.`,
+    `صباح الورد يا نونه، يا أجمل نسمه في حياتي.`,
+    `نونه يا أمي، في حضنك بحس بالأمان والدفا.`,
+    `يا نونه يا قلبي، افتكري دايمًا إن ضحكتك أجمل حاجة في الدنيا.`,
+    `نونه، النهاردة فرصة جديدة تبدأي بيها أحلامك من أول وجديد.`,
+    `يا نونه، بحب أشوفك سعيدة، عشانك الفرحة في قلبي.`,
+    `صباح الخير يا نونه، يا أحلى ملاك في الدنيا.`,
+    `نونه، حتى لو الدنيا صعبة، أنا هنا دايمًا سندك.`,
+    `يا نونه، خلي عندك ثقة إنك تقدري تغيري حياتي للأحسن.`,
+    `نونه يا صحبتي، كل يوم بحمد ربنا إنك في حياتي.`,
+    `صباح النور يا نونه، يا وردة بتتفتح كل صباح.`,
+    `نونه يا حبيبتي، افتكري دايمًا إنك ليكي مكانة خاصة في قلبي.`,
+    `يا نونه يا بنتي، إنتي مش بس حبيبتي، إنتي كل حياتي.`,
+    `نونه، خلي ابتسامتك نور يملأ الدنيا.`,
+    `يا نونه، مهما حصل، أنا معاك على طول.`,
+    `نونه يا أختي، عايز أشوفك دايمًا بخير وفرحانة.`,
+    `صباح الفل يا نونه، يا أجمل هدية ربنا ادهالي.`,
+    `نونه يا كل مالي في الدنيا، أنا مبسوط دايمًا بقربك.`,
+    `يا نونه، افتكري دايمًا إنك قوية وجميلة.`,
+    `نونه، صباحك سعيد ومليان حب وفرحة.`,
+    `يا نونه، مهما تبعدي، قلبي معاك.`,
+    `نونه يا وردة، خلي يومك يبتدي بأحلى حاجة.`,
+    `صباح الخير يا نونه، أنا دايمًا بفكر فيكي.`,
+    `نونه، عايز أقولك إنك نعمة من ربنا في حياتي.`,
+    `يا نونه يا غالية، خلي كل يوم يبدأ بحلم جديد.`,
+    `صباح الفل يا أجمل نونه، يومك يبدأ بابتسامة جميلة زيك بالظبط.`,
+    `نونه، لما بتصحى وأنتِ مرتاحة، الدنيا كلها بتضحكلك.`,
+    `يا نونه، كل كلمة حب في قلبي ليكي مش بتكفي توصفك.`,
+    `نونه يا بنتي، لما بتتكلمي بصوتك الحلو بحس الدنيا كلها بأمان.`,
+    `صباح الخير يا نور عيني، يا أجمل ملاك في حياتي.`,
+    `يا نونه، دايمًا خليكي قدوة لنفسك ولكل الناس اللي حواليكي.`,
+    `نونه، مهما تعبتي، ربنا معاك وهيعوضك دايمًا بالخير.`,
+    `نونه يا أمي، بحس بالدفا والأمان لما بشوف ضحكتك.`,
+    `يا نونه، الدنيا محتاجة منك ضحكة تملى قلبها فرح.`,
+    `نونه، يا وردة جميلة، دايمًا خليكِ مشرقة زي الشمس.`,
+    `صباح الخير يا حبيبتي، يا نونه اللي قلبي بيفرح بيها كل يوم.`,
+    `نونه، حتى لو الدنيا كانت غريبة، أنا دايمًا جنبك.`,
+    `يا نونه، خلي قلبك دايمًا مليان أمل وحب يا اجمل بنوتة في الدنيا.`,
+    `نونه، انتِ مش بس ملاكي، انتِ كل حكاياتي الحلوة.`,
+    `صباح الفل يا نونه، يا نور الدنيا اللي ما بينطفيش.`,
+    `نونه يا صحبتي، معاك الحياة أجمل وأحلى بكتير.`,
+    `يا نونه، خلي طموحاتك كبيرة وقوية زي قلبك.`,
+    `نونه، عايز أقولك إنك أجمل قصة في حياتي.`,
+    `نونه يا بنتي، لما بتضحكي بحس الدنيا ملكنا.`,
+    `يا نونه، خليك دايمًا مميزة بطريقتك الجميلة.`,
+    `نونه، مهما حصل، أنا جنبك على طول.`,
+    `صباح الورد يا نونه، يا ملاك بيغمر الدنيا نور.`,
+    `نونه، قلبي بيغني كل يوم لما بشوفك بخير.`,
+    `يا نونه، الدنيا بتتزين بضحكتك اللي ما ليها مثيل.`,
+    `نونه يا أمي، حضنك هو الدفا والأمان في الدنيا.`,
+    `نونه، خلي يومك يبدأ بأحلى أمنية.`,
+    `صباح الخير يا نونه، يا وردة بتنور كل مكان.`,
+    `يا نونه، مهما تبعدي، قلبي معاك في كل لحظة.`,
+    `نونه، انتِ مش بس حبيبتي، انتِ أختي وصحبتي.`,
+    `نونه، خلي أحلامك كبيرة عشان تستاهلي كل حاجة حلوة.`,
+    `صباح الفل يا نونه، يا أجمل هدية من ربنا.`,
+    `نونه، لما بتكوني بخير الدنيا بتضحكلك.`,
+    `يا نونه، خلي كل يوم يبتدي بحب جديد.`,
+    `نونه، بحب أقولك دايمًا إنتِ سر سعادتي.`,
+    `نونه يا بنتي، خليكي قوية زي قلبك الحلو.`,
+    `يا نونه، ضحكتك بتنور أيامي.`,
+    `نونه، دايمًا معاك في كل خطوة في حياتك.`,
+    `صباح الخير يا نونه، يا أجمل ملاك في الدنيا.`,
+    `نونه، مهما تغيرت الظروف، أنا معاك على طول.`,
+    `يا نونه، خلي قلبك مليان فرح وأمل.`,
+    `نونه، إنتِ أغلى من كل حاجة في الدنيا.`,
+    `صباح الورد يا نونه، يا أجمل زهرة في بستان حياتي.`,
+    `نونه، خلي كل لحظة تمر عليك تكون مليانة حب وسعادة.`,
+    `يا نونه، دايمًا خليكي قوية ومتألقة زي النجوم.`,
+    `نونه، بحب أشوفك دايمًا ضحكتك منورة الدنيا.`,
+    `نونه يا أمي، حضنك هو الأمان والراحة اللي بدور عليها.`,
+    `نونه، عايز أقولك إنتِ السبب في فرحتي كل يوم.`,
+    `صباح الخير يا نونه، يا أجمل هدية من ربنا ليّا.`,
+    `يا نونه، خلي طموحك كبير وكل يوم يكون بداية جديدة.`,
+    `نونه، مهما كانت الدنيا صعبة، ربنا معاك ومساندك.`,
+    `نونه يا بنتي، ضحكتك بتنسي أي تعب.`,
+    `نونه، خليكي دايمًا مشعة زي الشمس في السماء.`,
+    `صباح الفل يا نونه، يا أغلى من نور عيني.`,
+    `نونه، عايز أقولك إنك سر سعادتي وراحتي.`,
+    `يا نونه، خلي قلبك دايمًا مليان حب وأمل.`,
+    `نونه، انتِ أجمل حاجة حصلت في حياتي.`,
+    `نونه يا صحبتي، دايمًا بحمد ربنا على وجودك في حياتي.`,
+    `نونه، خلي ابتسامتك نورت أيامي المظلمة.`,
+    `صباح الخير يا نونه، يا أجمل ملاك.`,
+    `نونه، مهما حصل، أنا دايمًا جنبك.`,
+    `يا نونه، خلي يومك سعيد ومليان نجاح.`,
+    `نونه، بحب أقولك دايمًا إنتِ أحلى هدية من ربنا.`,
+    `نونه يا وردة، خليكي دايمًا متألقة ومتوهجة في كل وقت.`
   ];
 
-  // 50 جواب طويل رومانسي من الزوج لمنار
   const longMessages = [
-    // ... (نفس الرسائل بدون تعديل)
+`أكتب إليكِ الآن يا منار، وفي قلبي من الشوق ما لو نطقت به الحروف لاحترقت،
+وفي صدري من الحب ما يعجز عنه البوح،
+لكنّني أُجاهد اللغة، وأُعاتب الحبر، علّه يُنصفكِ ولو بالقليل من كثيرٍ يستقرّ داخلي.
+
+أكتب إليكِ كما تكتب السماء سطورها بالنجوم، وكما ترسل الشمس أشعتها إلى الأرض دون أن تطلب مقابلًا.
+أكتب إليكِ لأنكِ لستِ فقط جزءًا من أيامي، بل أنتِ الزمان الذي أعيش فيه، والمسافة التي أقطعها لأصل إلى ذاتي.
+أنتِ الهواء حين يضيق صدري، والماء حين يجف قلبي، والدفء حين تتكاثر برودة الأيام.
+
+يا نونه الحبيبة،
+لو كانت القلوب تُرى، لرأيتِ اسمكِ محفورًا في قلبي كما تُنقش الآيات على الحجر،
+ولو سُمح للكلمات أن تبني وطنًا، لبنيت لكِ من مفردات عشقي قصرًا لا يتهدّم.
+
+لقد جمعتُ لكِ الذهب، لا لثقله، بل لقيمته التي تليق بقلبٍ مثلكِ،
+وأنا لا أقدّم لكِ مجرّد هدية، بل أقدّمكِ للعالم عروسًا لقلبٍ لم يعرف حبًّا غيرك.
+
+واعلمي، يا كلّ أيامي، أنّكِ لستِ عبئًا ولا همًا،
+بل أنتِ الحياة حين تبتسم، والحظ حين يُنصف، والقدر حين يُحسن الاختيار.
+
+خلافي معكِ لا يُنقص من حبّي، بل يُثبّته،
+فحتى الأمواج تصطدم بالصخر، لكنها لا ترحل،
+بل تعود كل مرّة، بشغفٍ أكبر، لتُقبّله من جديد.`,
+
+`منار نونه عمري، يا حلم عمري،  
+حين أراكِ تشرقين في صباحي، أشعر أن الكون قد منحني أجمل هدية،  
+أنتِ الحنان الذي يملأ قلبي، والصوت الذي يغني لي ألحان الأمان.  
+
+نونه، يا وردتي التي تذبل حين تغيبين، وتتفتح بأشعة حبك،  
+كل يوم معك هو بداية جديدة لحياة لا تنتهي من العشق،  
+وعندما تلمسين يدي، أشعر أن روحي تُشفى من كل ألم،  
+وأحلامي تزهر في بستان حبك الكبير.`,
+
+`يا نونه، يا منار قلبي وروحي،  
+كل لحظة تمرّ بدون صوتك كأنها شتاء بلا دفء،  
+أنتِ الحكاية التي تعيشها أيامي،  
+والنور الذي لا يخبو في عتمة الليالي.  
+
+أحبك فوق كل وصف،  
+وأهديك قلبي مكتوبًا بأحرف الشوق والوله،  
+فيا منارة حياتي،  
+دعيني أظل أكتب لكِ قصائد العشق بلا نهاية.`,
+
+`نونه الحبيبة، يا قمر عيوني،  
+حين يغيب النهار ويحل الليل،  
+أتذكركِ وأكتب اسمكِ على جدران قلبي،  
+فأنتِ القصة الأجمل التي عرفت كيف تروى في حياتي.  
+
+منار، أنتِ النور الذي يضيء دربي،  
+والصوت الذي يلهمني ألحان الفرح،  
+كل همسة منك تزرع في قلبي زهرة أمل،  
+وأنتِ الأمان الذي لا يزول مهما طال الزمن.`,
+
+`يا نونه، يا ملاكي الحنون،  
+كم تمنيت لو كنت كلمات لأخبرك كم أحبك،  
+لكنكِ أكبر من كل الكلمات، وأعمق من كل المشاعر،  
+فحبكِ في قلبي لا يموت، ولا يعرف النهاية.  
+
+منار، أنتِ الحلم الذي تحقق،  
+والحب الذي لا يذبل،  
+ومعكِ فقط عرفت معنى السعادة.`,
+
+`نونه يا عمري، يا زهرة قلبي،  
+كل صباح يبتسم لأنك فيه،  
+وأنا أبدأ يومي بدعاء أن يحفظك الله لي،  
+ويملأ أيامك حبًا وفرحًا لا ينتهي.`,
+
+`منار الغالية، يا ملاك روحي،  
+كل كلمة حب أرسلها لكِ،  
+هي نبضات قلبي التي تنطق باسمك،  
+وكل لحظة تمر لا أتخيل الحياة بدونك.`,
+
+`نونه الحبيبة، يا بسمة حياتي،  
+لو استطعت أن أزرع الدنيا ورودًا،  
+لزرعتها فقط لتكون طريقك مليء بالجمال والفرح.`, 
+
+`يا منار، يا ملكة قلبي،  
+أعدك أن أكون دائمًا بجانبك،  
+أمسد يدك وقت الضعف، وأشاركك الفرح والسرور.`, 
+
+`نونه، يا أنشودة عمري،  
+كل يوم أعيشه معك هو أغنية حب لا تنتهي،  
+وأنتِ لحنها الجميل الذي يسكن قلبي.`
   ];
 
-  // رسائل لما تضغط استني شوية
   const waitMessages = [
     "براحتك يا نونه، خدي وقتك وأنا دايمًا مستنيك.",
     "مش مستعجل يا نونه، أنا هنا عشانك في أي وقت.",
@@ -126,6 +462,7 @@
     "استني على مهلك، يا نونه حياتي، وأنا جنبك."
   ];
 
+  // ---------- DOM references ----------
   const yesBtn = document.getElementById('yesBtn');
   const waitBtn = document.getElementById('waitBtn');
   const buttonsDiv = document.getElementById('buttonsDiv');
@@ -134,9 +471,164 @@
   const longMsgBtn = document.getElementById('longMsgBtn');
   const messageBox = document.getElementById('messageBox');
 
+  // ---------- overlay modal DOM ----------
+  const overlay = document.getElementById('overlay');
+  const imManarBtn = document.getElementById('imManarBtn');
+  const notManarBtn = document.getElementById('notManarBtn');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const dobInput = document.getElementById('dobInput');
+  const checkDobBtn = document.getElementById('checkDobBtn');
+  const dobError = document.getElementById('dobError');
+  const successBlock = document.getElementById('successBlock');
+  const failBlock = document.getElementById('failBlock');
+  const tryAgainBtn = document.getElementById('tryAgainBtn');
+  const exitBtn = document.getElementById('exitBtn');
+  const welcomeBubble = document.getElementById('successBlock');
+
+  // ---------- overlay logic ----------
+  // Focus trap basics: put focus on the modal button first
+  window.addEventListener('load', ()=> {
+    // set default date input max to today for nice UX
+    const today = new Date().toISOString().split('T')[0];
+    dobInput.max = today;
+    imManarBtn.focus();
+  });
+
+  imManarBtn.addEventListener('click', () => {
+    // move to step2 to ask for date
+    step1.style.display = 'none';
+    step2.style.display = 'block';
+    step2.setAttribute('aria-hidden','false');
+    dobInput.focus();
+  });
+
+  notManarBtn.addEventListener('click', () => {
+    // polite message and allow exit
+    step1.style.display = 'none';
+    step3.style.display = 'block';
+    document.getElementById('failBlock').style.display = 'block';
+    document.getElementById('failBlock').querySelector('.error').textContent = "معلش... الموقع ده مخصوص بس للأميرة منار نسيم الحسنيين.";
+  });
+
+  // Helper: format a date input (YYYY-MM-DD) to DD/MM/YYYY for display
+  function formatDateToDDMMYYYY(yyyy_mm_dd) {
+    if(!yyyy_mm_dd) return '';
+    const parts = yyyy_mm_dd.split('-');
+    if(parts.length !== 3) return yyyy_mm_dd;
+    return `${('0'+parts[2]).slice(-2)}/${('0'+parts[1]).slice(-2)}/${parts[0]}`;
+  }
+
+  // when user confirms DOB
+  checkDobBtn.addEventListener('click', () => {
+    dobError.style.display = 'none';
+    const val = dobInput.value; // format: YYYY-MM-DD
+    if(!val) {
+      dobError.style.display = 'block';
+      dobError.textContent = "لو سمحتي اختاري التاريخ من التقويم.";
+      return;
+    }
+
+    // expected date: 1996-11-24 (24/11/1996)
+    const expected = "1996-11-24";
+    if(val === expected) {
+      // success: show romantic welcome then dismiss overlay and reveal main UI
+      step2.style.display = 'none';
+      step3.style.display = 'block';
+      welcomeBubble.style.display = 'block';
+      // create a short romantic message with small animation (typing-like)
+      const formatted = formatDateToDDMMYYYY(val);
+      const romanticLines = [
+        `يا منار... مساء الورد والسكر 🌹`,
+        `النهاردة قلبي بيغني ليكي لأنك دخلتي هنا بـ تاريخ مهم وحابب أرحب بيكي بأحلى كلام.`,
+        `تاريخ ميلاد زوجك: ${formatted} — شكله التاريخ ده ليه حكاية خاصة، وحكايتكم مع بعض أجمل.`,
+        `تعالي معايا نكمل وبابك جمعة عنده رسائل وصوت مليان حب ليكي...`
+      ];
+
+      // typing-like reveal
+      welcomeBubble.innerHTML = "";
+      let idx=0;
+      function revealNextLine(){
+        if(idx >= romanticLines.length) {
+          // after showing all lines, reveal main UI after a short pause
+          const btnContinue = document.createElement('div');
+          btnContinue.style.marginTop = '12px';
+          btnContinue.innerHTML = `<button id="continueBtn" class="btn">خليّنا نكمل يا نونه 💖</button>`;
+          welcomeBubble.appendChild(btnContinue);
+          document.getElementById('continueBtn').focus();
+          document.getElementById('continueBtn').addEventListener('click', () => {
+            closeOverlayAndReveal();
+          });
+          return;
+        }
+        const p = document.createElement('p');
+        p.style.margin = '8px 0';
+        p.style.fontSize = '16px';
+        p.style.opacity = '0';
+        p.textContent = romanticLines[idx];
+        welcomeBubble.appendChild(p);
+        // fade in each line
+        setTimeout(()=> { p.style.transition = 'opacity 360ms ease'; p.style.opacity = '1'; }, 40);
+        idx++;
+        // wait before next line
+        setTimeout(revealNextLine, 650);
+      }
+      revealNextLine();
+    } else {
+      // failure: show fail block with message
+      step2.style.display = 'none';
+      step3.style.display = 'block';
+      document.getElementById('failBlock').style.display = 'block';
+      dobError.style.display = 'none';
+      // show special message inside failBlock (redundant but explicit)
+      // (failBlock is already prepared in HTML)
+    }
+  });
+
+  tryAgainBtn.addEventListener('click', ()=> {
+    // go back to date step
+    document.getElementById('failBlock').style.display = 'none';
+    step3.style.display = 'none';
+    step2.style.display = 'block';
+    dobInput.value = '';
+    dobInput.focus();
+  });
+
+  exitBtn.addEventListener('click', ()=> {
+    // close overlay but keep main UI locked in a gentle way: show main but with message that it's locked
+    // For this implementation, we'll simply remove overlay and let the user interact with the main UI (they're not authorized though).
+    // But keep a gentle warning in the messageBox.
+    closeOverlayAndReveal(true);
+  });
+
+  function closeOverlayAndReveal(unauthorized=false){
+    overlay.style.display = 'none';
+    // if authorized (correct DOB) show a subtle romantic welcome inside main UI before enabling
+    if(!unauthorized) {
+      // show a quick romantic welcome inside messageBox then reveal buttons
+      messageBox.style.display = 'block';
+      messageBox.textContent = "أهلاً يا منار ♥️ — متشوقين نبيّنلك اليوم كلام حنين من بابي جمعة...";
+      // small flourish: wait a bit then show choices
+      setTimeout(()=> {
+        messageBox.style.display = 'none';
+        buttonsDiv.style.display = 'block';
+        choiceDiv.style.display = 'none';
+      }, 1100);
+    } else {
+      // if unauthorized (user exited), show a polite lock message and still reveal interface but disabled
+      messageBox.style.display = 'block';
+      messageBox.innerHTML = `<strong>معلش...</strong> الصفحه دي مخصوصة للأميرة منار نسيم الحسنيين. لو إنتي منار حاولي تدخل التاريخ الصح.`;
+      buttonsDiv.style.display = 'none';
+      choiceDiv.style.display = 'none';
+    }
+  }
+
+  // ---------- original UI handlers (unchanged behavior) ----------
   yesBtn.addEventListener('click', () => {
     buttonsDiv.style.display = 'none';
     choiceDiv.style.display = 'block';
+    messageBox.style.display = 'none';
   });
 
   waitBtn.addEventListener('click', () => {
@@ -160,17 +652,52 @@
   function showRandomShortMessage() {
     const idx = Math.floor(Math.random() * shortMessages.length);
     messageBox.textContent = shortMessages[idx];
+    messageBox.style.display = 'block';
   }
 
   function showRandomLongMessage() {
     const idx = Math.floor(Math.random() * longMessages.length);
     messageBox.textContent = longMessages[idx];
+    messageBox.style.display = 'block';
   }
 
   function showRandomWaitMessage() {
     const idx = Math.floor(Math.random() * waitMessages.length);
     messageBox.textContent = waitMessages[idx];
+    messageBox.style.display = 'block';
   }
+
+  // accessibility: close overlay with Escape if visible
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){
+      if(overlay && overlay.style.display !== 'none'){
+        // allow escape to close overlay as "exit"
+        closeOverlayAndReveal(true);
+        overlay.style.display = 'none';
+      }
+    }
+  });
+
+  // Extra: prevent accidental form submission or refresh when pressing Enter in date input
+  dobInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      checkDobBtn.click();
+    }
+  });
+
+  // small polish: if user clicks outside modal, do nothing (keeps them inside)
+  overlay.addEventListener('click', (e)=> {
+    if(e.target === overlay){
+      // gentle bounce to modal to indicate it's modal
+      const modal = overlay.querySelector('.modal');
+      modal.style.transition = 'transform 160ms ease';
+      modal.style.transform = 'translateY(-6px)';
+      setTimeout(()=> { modal.style.transform = 'translateY(0)'; }, 160);
+    }
+  });
+
 </script>
 </body>
 </html>
+```
